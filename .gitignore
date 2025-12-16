@@ -1,0 +1,189 @@
+# ------ JUNK ------
+
+
+# <IDE Files>
+
+# Jetbrains
+.idea/
+*.iml
+
+# VS Code and Visual Studio
+.vscode/
+
+# Vim and related
+*.swn
+*.swm
+*.swl
+*~
+*.old
+*.orig
+.vim/
+.vimrc.local
+.viminfo
+Session.vim
+*.un~
+.nvim/
+.nvimlog
+shada/
+
+# EMacs
+.#*
+\#*#
+.emacs.desktop
+.emacs.desktop.lock
+*.elc
+auto-save-list/
+tramp
+
+# Other stuff IDEs
+*.save
+.project
+.classpath
+.settings/
+
+
+# <OS files>
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+desktop.ini
+$RECYCLE.BIN/
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+.fuse_hidden*
+
+
+# <Terminal and Stuff/Temp/MISC junk>
+
+# Terminal
+.bash_history
+.zsh_history
+.zsh_sessions/
+.fish_history
+
+# CI / TEMP / MISC
+.tmp/
+tmp/
+temp/
+logs/
+*.swp
+*.swo
+*.bak
+
+
+# <Other junk>
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Debug and crash
+core
+core.*
+*.stackdump
+
+# Database
+*.sqlite
+*.sqlite3
+!db.sqlite3
+*.db
+*.pid
+
+# ------ FRONTEND ------
+
+
+# <JS package managers>
+
+# npm
+node_modules/
+
+# pnpm
+.yarn/
+.pnp.*
+yarn-error.log
+.yarnrc.yml
+
+# bun
+.bun/
+
+# Nx/Turborepo/Monorepo
+
+.turbo/
+.cache/
+
+
+# <Build Outputs>
+
+# basic
+dist/
+build/
+.output/
+
+# other builds
+.nuxt/
+.svelte-kit/
+.vercel/
+.netlify/
+
+# vite
+.vite/
+*.tsbuildinfo
+vite.config.js.timestamp-*
+
+# ------ BACKEND ------
+
+
+# <Python files>
+
+# environments
+venv/
+.venv/
+env/
+.env/
+
+# cache and stuff
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# <Django files>
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
+
+# ------ OTHERS ------
+
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+bun-debug.log*
+
+# secrets
+.env
+.env.*
+*.key
+*.pem
+*.crt
+secrets.*
+credentials.*
+
+# test files
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.tox/
+junit.xml
