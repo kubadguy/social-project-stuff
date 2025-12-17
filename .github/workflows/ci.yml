@@ -1,0 +1,52 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        app: [svelte, nuxt]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install & Build
+        run: |
+          if [ "${{ matrix.app }}" = "svelte" ]; then
+            cd src
+            npm ci
+            npm run build
+          else
+            cd admin-src
+            npm ci
+            npm run generate
+          fi
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Copy built files
+        run: |
+          rm -rf pages-dist
+          mkdir -p pages-dist/admin
+          cp -r src/build/* pages-dist/
+          cp -r admin-src/.output/* pages-dist/admin/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pages-dist
