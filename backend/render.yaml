@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: social-project-stuff
+    runtime: python
+    plan: free
+    region: singapore
+    branch: main
+
+    rootDir: backend
+
+    buildCommand: |
+      pip install -r requirements.txt
+
+    startCommand: |
+      python manage.py migrate && gunicorn social_project.wsgi:app
+
+    healthCheckPath: /cont/ping-health/
+
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        sync: false
+      - key: DJANGO_DEBUG
+        sync: false
+      - key: DJANGO_SECRET_KEY
+        sync: false
+
+    autoDeploy: true
