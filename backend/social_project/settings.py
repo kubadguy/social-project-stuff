@@ -17,10 +17,10 @@ DEBUG = os.environ.get('DJANGO_DEBUG', False) == 'true'
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost'
-] + os.environ.get(
+] + [os.environ.get(
     "WEBSITE_NAME",
     '.onrender.com'
-)
+)]
 
 # Application definition
 
