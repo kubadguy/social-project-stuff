@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [svelte, nuxt]
+        app: [svelte]
 
     steps:
       - uses: actions/checkout@v3
@@ -26,10 +26,6 @@ jobs:
             cd src
             npm ci
             npm run build
-          else
-            cd admin-src
-            npm ci
-            npm run generate
           fi
 
   deploy:
@@ -43,7 +39,6 @@ jobs:
           rm -rf pages-dist
           mkdir -p pages-dist/admin
           cp -r src/build/* pages-dist/
-          cp -r admin-src/.output/* pages-dist/admin/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v6
