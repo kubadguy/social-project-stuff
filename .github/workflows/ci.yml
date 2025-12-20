@@ -11,10 +11,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        app: [svelte]
-
     steps:
       - uses: actions/checkout@v3
 
@@ -25,23 +21,29 @@ jobs:
 
       - name: Install & Build
         run: |
-          if [ "${{ matrix.app }}" = "svelte" ]; then
-            cd src
-            npm ci
-            npm run build
-          fi
+          cd src
+          npm ci
+          npm run build
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: svelte-build
+          path: src/build
+          if-no-files-found: error
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
-      - name: Copy built files
-        run: |
-          rm -rf pages-dist
-          mkdir -p pages-dist
-          cp -r src/build/* pages-dist/
+      - name: Download build
+        uses: actions/download-artifact@v4
+        with:
+          name: svelte-build
+          path: pages-dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
