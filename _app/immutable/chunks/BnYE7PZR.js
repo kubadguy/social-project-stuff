@@ -1,0 +1,1 @@
+const a="https:/social-project-stuff.onrender.com";function r(e){return e.message}async function n(){let e,t;try{e=await fetch(`${a}/cont/is_alive`,{cache:"no-store",signal:AbortSignal.timeout(1500)})}catch{return[0,"Backend Not Alive"]}try{t=await e.json()}catch{return["parse","Parsing error"]}return e.ok?t.okay?[1,r(t)]:["backend",r(t)]:["code",r(t)]}export{a as B,n as i};
