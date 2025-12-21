@@ -1,6 +1,9 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
+const dev = process.argv.includes('dev');
+const repo = 'social-project-stuff';
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
     preprocess: vitePreprocess(),
@@ -11,9 +14,11 @@ const config = {
             assets: 'build',
             fallback: 'index.html'
         }),
+
         paths: {
-            base: process.env.GITHUB_REPOSITORY ? '/' + process.env.GITHUB_REPOSITORY.split('/')[1] : ''
+            base: dev ? '' : `/${repo}`,
         },
+
         prerender: {
             handleHttpError: 'warn'
         }
