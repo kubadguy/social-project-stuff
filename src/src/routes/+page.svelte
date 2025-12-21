@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { isBackendAwake } from '$lib/backend';
+    import { base } from '$app/paths';
 
     let checking = true;
     let awake = false;
@@ -74,7 +75,7 @@
 
             <p class="text-white/70 mb-6">{msg}</p>
 
-            <a href="/wakeup"
+            <a href="{base}/wakeup"
                class="px-8 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 transition shadow-lg shadow-purple-900/50 text-lg font-semibold">
                 Wake Up Backend
             </a>
