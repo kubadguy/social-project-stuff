@@ -143,4 +143,69 @@
         height: 6px;
         background: linear-gradient(90deg, #ff00ff, #00ffff);
         animation: loading 1.5s infinite;
-        bord
+        border-radius: 3px;
+    }
+
+    @keyframes loading {
+        0%, 100% { transform: scaleX(0.2); }
+        50% { transform: scaleX(1); }
+    }
+
+    /* Glitch text */
+    .glitch-text {
+        position: relative;
+    }
+
+    .glitch-text::before,
+    .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+    }
+
+    .glitch-text::before {
+        color: #00ffff;
+        animation: glitchTop 2s infinite linear alternate-reverse;
+    }
+
+    .glitch-text::after {
+        color: #ff00ff;
+        animation: glitchBottom 2s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitchTop {
+        0% { clip: rect(0, 9999px, 0, 0); transform: translate(-2px, -2px); }
+        50% { clip: rect(0, 9999px, 100%, 0); transform: translate(2px, 2px); }
+        100% { clip: rect(0, 9999px, 0, 0); transform: translate(-2px, -2px); }
+    }
+
+    @keyframes glitchBottom {
+        0% { clip: rect(0, 9999px, 0, 0); transform: translate(2px, 2px); }
+        50% { clip: rect(0, 9999px, 100%, 0); transform: translate(-2px, -2px); }
+        100% { clip: rect(0, 9999px, 0, 0); transform: translate(2px, 2px); }
+    }
+
+    /* Buttons */
+    .glow-button {
+        box-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, 0 0 30px #ff00ff;
+        transition: all .3s ease-in-out;
+    }
+
+    .glow-button:hover {
+        box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff, 0 0 60px #ff00ff;
+        transform: scale(1.05);
+    }
+
+    @keyframes fadein {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    .animate-fadein {
+        animation: fadein 1s ease-in-out;
+    }
+</style>
