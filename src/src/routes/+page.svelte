@@ -2,6 +2,10 @@
     import { onMount } from 'svelte';
     import { isBackendAwake } from '$lib/backend';
     import { base } from '$app/paths';
+    import { onDestroy } from 'svelte';
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
 
     let checking = true;
     let awake = false;
@@ -23,8 +27,8 @@
         for (let i = 0; i < 50; i++) {
             const dot = document.createElement('div');
             dot.className = 'particle';
-            dot.style.left = Math.random() * window.innerWidth + 'px';
-            dot.style.top = Math.random() * window.innerHeight + 'px';
+            dot.style.left = Math.random() * w + 'px';
+            dot.style.top = Math.random() * h + 'px';
             dot.style.animationDelay = Math.random() * 5 + 's';
             container.appendChild(dot);
         }
@@ -37,7 +41,7 @@
         for (let i = 0; i < 20; i++) {
             const line = document.createElement('div');
             line.className = 'floating-line';
-            line.style.left = Math.random() * window.innerWidth + 'px';
+            line.style.left = Math.random() * w + 'px';
             line.style.animationDelay = Math.random() * 5 + 's';
             container.appendChild(line);
         }
@@ -52,6 +56,11 @@
         msg = message;
         awake = status === 1;
         checking = false;
+    });
+
+    onDestroy(() => {
+        ambient?.pause();
+        ambient = null;
     });
 </script>
 
