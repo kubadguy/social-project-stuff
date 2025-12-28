@@ -34,24 +34,22 @@
         spawnParticles();
 
         try {
+            // First, trigger the backend to start if it's asleep.
             await fetch(`${BACKEND_URL}/cont/wake-up/`, { cache: 'no-store' });
 
-            for (let i = 0; i < 10; i++) {
-                status = `Booting modules… ${i + 1}/10`;
-                await new Promise(r => setTimeout(r, 1200));
+            // Then, use the robust isBackendAwake with its retry mechanism
+            const [statusResult] = await isBackendAwake();
 
-                const [alive] = await isBackendAwake();
-                if (alive === 1) {
-                    status = "Backend Online ✔ Redirecting…";
-                    await new Promise(r => setTimeout(r, 800));
-                    window.location.href = "/";
-                    return;
-                }
+            if (statusResult === 1) {
+                status = "Backend Online ✔ Redirecting…";
+                await new Promise(r => setTimeout(r, 800));
+                window.location.href = "/";
+            } else {
+                status = "Backend failed to wake. Try again.";
             }
 
-            status = "Backend failed to wake. Try again.";
-
-        } catch {
+        } catch (error) {
+            console.error("Error during wakeBackend:", error);
             status = "Connection failed.";
         }
     }

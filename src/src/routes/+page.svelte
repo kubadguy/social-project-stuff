@@ -105,6 +105,11 @@
                 <button class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 transition shadow-lg shadow-blue-900/50 text-lg font-semibold glow-button">
                     Start Experience
                 </button>
+            {:else}
+                <a href={`${base}/wakeup`}
+                   class="px-8 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 transition shadow-lg shadow-purple-900/50 text-lg font-semibold glow-button">
+                    Wake Up Backend
+                </a>
             {/if}
         {/if}
     </div>
