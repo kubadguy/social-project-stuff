@@ -1,1 +1,0 @@
-import{l as t,e as a,d as o,n as u,f as l}from"./CWNzdGws.js";function c(n){o===null&&t(),u&&o.l!==null?f(o).m.push(n):a(()=>{const e=l(n);if(typeof e=="function")return e})}function i(n){o===null&&t(),c(()=>()=>l(n))}function f(n){var e=n.l;return e.u??={a:[],b:[],m:[]}}export{i as a,c as o};
