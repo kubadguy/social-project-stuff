@@ -8,7 +8,6 @@
     const h = window.innerHeight;
 
     let checking = true;
-    let awake = false;
     let msg = '';
 
     let ambient: HTMLAudioElement | null = null;
@@ -54,14 +53,16 @@
 
         const [status, message] = await isBackendAwake();
         msg = message;
-        awake = status === 1;
-        checking = false;
+        checking = false; // Set to false once the final status is received
     });
 
     onDestroy(() => {
         ambient?.pause();
         ambient = null;
     });
+
+    // Helper to determine if the backend is successfully online
+    $: backendOnline = msg === "Backend Online 🎉";
 </script>
 
 <div class="min-h-screen w-full bg-black text-white flex items-center justify-center p-4 relative overflow-hidden font-sans">
@@ -79,36 +80,32 @@
                 <div class="cyber-bar"></div>
                 <div class="cyber-bar"></div>
                 <div class="cyber-bar"></div>
+                <div class="cyber-bar"></div>
+                <div class="cyber-bar"></div>
             </div>
 
             <p class="mt-4 text-white/70 tracking-wider">Calibrating systems…</p>
 
-        {:else if awake}
-            <h1
-                    class="text-4xl md:text-6xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-6 glitch-text"
-                    data-text="Backend Online 🎉">
-                Backend Online 🎉
-            </h1>
-
-            <p class="text-white/70 mb-6 tracking-wider">{msg}</p>
-
-            <button class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 transition shadow-lg shadow-blue-900/50 text-lg font-semibold glow-button">
-                Start Experience
-            </button>
-
         {:else}
             <h1
-                    class="text-4xl md:text-6xl font-black bg-gradient-to-r from-red-400 to-purple-400 bg-clip-text text-transparent mb-6 glitch-text"
-                    data-text="Backend Sleeping 😴">
-                Backend Sleeping 😴
+                    class="text-4xl md:text-6xl font-black bg-gradient-to-r {backendOnline ? 'from-blue-400 to-purple-400' : 'from-red-400 to-purple-400'} bg-clip-text text-transparent mb-6 glitch-text"
+                    data-text={msg}>
+                {msg}
             </h1>
 
-            <p class="text-white/70 mb-6 tracking-wider">{msg}</p>
+            <p class="text-white/70 mb-6 tracking-wider">
+                {#if backendOnline}
+                    {msg}
+                {:else}
+                    Backend is not available. Please try again later or check the server status.
+                {/if}
+            </p>
 
-            <a href={`${base}/wakeup`}
-               class="px-8 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 transition shadow-lg shadow-purple-900/50 text-lg font-semibold glow-button">
-                Wake Up Backend
-            </a>
+            {#if backendOnline}
+                <button class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 transition shadow-lg shadow-blue-900/50 text-lg font-semibold glow-button">
+                    Start Experience
+                </button>
+            {/if}
         {/if}
     </div>
 </div>

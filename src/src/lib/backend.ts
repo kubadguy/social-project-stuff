@@ -1,7 +1,10 @@
 import { BACKEND_URL } from './config';
 import { type BackendResponseForAwake, getBackendMessage } from "./utils";
 
-async function isBackendAwake(): Promise<[string | number, string]> {
+const MAX_RETRIES = 10;
+const RETRY_DELAY_MS = 3000; // 3 seconds
+
+async function isBackendAwake(retriesLeft = MAX_RETRIES): Promise<[string | number, string]> {
     let res: Response;
 
     try {
@@ -10,19 +13,24 @@ async function isBackendAwake(): Promise<[string | number, string]> {
             signal: AbortSignal.timeout(1500)
         });
     } catch {
+        // If fetch fails, and retries are left, try again.
+        if (retriesLeft > 0) {
+            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+            return isBackendAwake(retriesLeft - 1);
+        }
         return [0, "Backend Not Alive"];
-    }
-
-    // If the backend returns a 503, it's likely still waking up (Render free tier).
-    if (res.status === 503) {
-        return ["waking", "Backend is warming up…"];
     }
 
     const contentType = res.headers.get("content-type") || "";
 
-    // Backend is returning HTML → means it's booting (e.g., Render default page during cold start)
-    if (contentType.includes("text/html")) {
-        return ["waking", "Backend is waking up"];
+    // If the backend returns a 503 or HTML, it's likely still waking up (Render free tier).
+    if (res.status === 503 || contentType.includes("text/html")) {
+        if (retriesLeft > 0) {
+            // console.log(`Backend waking up, retrying in ${RETRY_DELAY_MS / 1000} seconds... (${retriesLeft} retries left)`);
+            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+            return isBackendAwake(retriesLeft - 1);
+        }
+        return ["waking", "Backend is warming up…"];
     }
 
     // Try JSON only if it looks like JSON
