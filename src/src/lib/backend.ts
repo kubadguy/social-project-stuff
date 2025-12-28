@@ -13,9 +13,14 @@ async function isBackendAwake(): Promise<[string | number, string]> {
         return [0, "Backend Not Alive"];
     }
 
+    // If the backend returns a 503, it's likely still waking up (Render free tier).
+    if (res.status === 503) {
+        return ["waking", "Backend is warming up…"];
+    }
+
     const contentType = res.headers.get("content-type") || "";
 
-    // Backend is returning HTML → means it's booting
+    // Backend is returning HTML → means it's booting (e.g., Render default page during cold start)
     if (contentType.includes("text/html")) {
         return ["waking", "Backend is waking up"];
     }
@@ -44,7 +49,9 @@ async function isBackendAwake(): Promise<[string | number, string]> {
             return ["backend", getBackendMessage(obj)];
         }
     } else {
-        return ["code", getBackendMessage(obj)];
+        // For other non-OK status codes with JSON, use the message from the backend if available.
+        // Otherwise, provide a generic message.
+        return ["code", obj.message || `Backend error: HTTP ${res.status}`];
     }
 }
 
