@@ -6,6 +6,7 @@
     let status = "Waking backend…";
     let wakeSound: HTMLAudioElement;
     let ambient: HTMLAudioElement;
+    let w: number; // Declare w at the top level
 
     function sounds() {
         wakeSound = new Audio('/sounds/wake.mp3');
@@ -23,13 +24,14 @@
         for (let i = 0; i < 25; i++) {
             const dot = document.createElement("div");
             dot.className = "particle";
-            dot.style.left = Math.random() * window.innerWidth + "px";
+            dot.style.left = Math.random() * w + "px"; // Use w here
             dot.style.animationDelay = Math.random() * 6 + "s";
             container?.appendChild(dot);
         }
     }
 
     async function wakeBackend() {
+        w = window.innerWidth; // Assign w inside onMount
         sounds();
         spawnParticles();
 

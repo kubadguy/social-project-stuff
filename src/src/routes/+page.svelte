@@ -4,8 +4,8 @@
     import { base } from '$app/paths';
     import { onDestroy } from 'svelte';
 
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    let w: number;
+    let h: number;
 
     let checking = true;
     let msg = '';
@@ -47,6 +47,8 @@
     }
 
     onMount(async () => {
+        w = window.innerWidth;
+        h = window.innerHeight;
         playAmbient();
         spawnParticles();
         spawnFloatingLines();
