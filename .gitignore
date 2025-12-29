@@ -190,3 +190,4 @@ junit.xml
 
 # idntifiers
 *.Identifier
+.aider*
